@@ -4,7 +4,7 @@
       <input type="checkbox" v-model="isCheck" />
     </label>
     <span> <span>已完成{{count}}</span> / 全部{{todos.length}} </span>
-    <button class="btn btn-danger">清除已完成任务</button>
+    <button class="btn btn-danger" @click="clear">清除已完成任务</button>
   </div>
 </template>
 
@@ -19,6 +19,10 @@ export default defineComponent({
       default: () => []
     },
     checkboxAll: {
+      type: Function,
+      required: true
+    },
+    clearAllCompletedTodos: {
       type: Function,
       required: true
     }
@@ -38,9 +42,16 @@ export default defineComponent({
         props.checkboxAll(val)
       }
     })
+
+    // 清楚选中数据
+    const clear = () => {
+      props.clearAllCompletedTodos()
+    }
+
     return {
       count,
-      isCheck
+      isCheck,
+      clear
     }
   }
 })

@@ -1,30 +1,68 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="todo-container">
+    <div class="todo-wrap">
+      <Header />
+      <List :todos="todos" :handleCompleted="handleCompleted"/>
+      <Footer />
+    </div>
   </div>
-  <router-view/>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { defineComponent, reactive, toRefs } from 'vue'
+import Header from './views/todoList/header.vue'
+import List from './views/todoList/list.vue'
+import Footer from './views/todoList/footer.vue'
 
-#nav {
-  padding: 30px;
+import { Todo } from './types/todo'
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+// // 定义接口约束数据
+// interface Todo {
+//   id: number;
+//   title: string;
+//   isCompleted: boolean;
+// }
 
-    &.router-link-exact-active {
-      color: #42b983;
+export default defineComponent({
+  name: 'app',
+  components: {
+    Header,
+    List,
+    Footer
+  },
+  setup () {
+    // 定义数据  泛型约束
+    const state = reactive<{todos:Todo[]}>({
+      todos: [
+        {
+          id: 1,
+          title: '奔驰',
+          isCompleted: false
+        },
+        {
+          id: 2,
+          title: '宝马',
+          isCompleted: true
+        },
+        {
+          id: 3,
+          title: '奥迪',
+          isCompleted: false
+        }
+      ]
+    })
+    const handleCompleted = (index: number) => {
+      console.log(123456)
+      state.todos[index].isCompleted = !state.todos[index].isCompleted
+    }
+
+    return {
+      ...toRefs(state),
+      handleCompleted
     }
   }
-}
+})
+</script>
+
+<style lang="scss">
 </style>

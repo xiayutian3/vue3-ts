@@ -1,9 +1,9 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-      <Header />
-      <List :todos="todos" :handleCompleted="handleCompleted"/>
-      <Footer />
+      <Header :addTodo="addTodo" />
+      <List :todos="todos" :handleCompleted="handleCompleted" :deleteTodo="deleteTodo"/>
+      <Footer :todos="todos" :checkboxAll="checkboxAll" />
     </div>
   </div>
 </template>
@@ -51,14 +51,30 @@ export default defineComponent({
         }
       ]
     })
+    // 修改数据的状态
     const handleCompleted = (index: number) => {
-      console.log(123456)
+      // console.log(123456)
       state.todos[index].isCompleted = !state.todos[index].isCompleted
+    }
+    // 添加数据的方法
+    const addTodo = (todo:Todo) => {
+      state.todos.unshift(todo)
+    }
+    // 删除数据的方法
+    const deleteTodo = (index:number) => {
+      state.todos.splice(index, 1)
+    }
+    // 设置所有的checkbox状态
+    const checkboxAll = (val:boolean) => {
+      state.todos.forEach(item => (item.isCompleted = val))
     }
 
     return {
       ...toRefs(state),
-      handleCompleted
+      handleCompleted,
+      addTodo,
+      deleteTodo,
+      checkboxAll
     }
   }
 })

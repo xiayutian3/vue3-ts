@@ -8,7 +8,7 @@
       <button class="btn btn-danger" style="display: none">删除</button>
     </li> -->
 
-    <Item v-for="(item,index) in todos" :key="item.id" :todo="item" :index="index" :handleCompleted="handleCompleted"/>
+    <Item v-for="(item,index) in todos" :key="item.id" :todo="item" :index="index" :handleCompleted="handleCompleted" :deleteTodo="deleteTodo"/>
   </ul>
 </template>
 
@@ -17,7 +17,7 @@ import { defineComponent } from 'vue'
 import Item from './item.vue'
 export default defineComponent({
   name: 'list',
-  props: ['todos', 'handleCompleted'],
+  props: ['todos', 'handleCompleted', 'deleteTodo'],
   components: {
     Item
   },

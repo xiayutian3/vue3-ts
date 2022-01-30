@@ -1,16 +1,16 @@
 <template>
-  <li>
+  <li @mouseenter="mouseHandler(true)" @mouseleave="mouseHandler(false)" :style="{backgroundColor:bgColor,color:myColor}">
     <label>
       <input type="checkbox" :checked="todo.isCompleted" @input="handleClick"/>
       <span>{{todo.title}}</span>
     </label>
-    <button class="btn btn-danger" style="display: none">删除</button>
+    <button class="btn btn-danger" v-show="isShow" @click="deleteFn">删除</button>
   </li>
 </template>
 
 <script lang="ts">
 import { Todo } from '@/types/todo'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 export default defineComponent({
   name: 'item',
   props: {
@@ -23,6 +23,10 @@ export default defineComponent({
     },
     index: {
       type: Number as PropType<number> // 返回ts中的类型
+    },
+    deleteTodo: {
+      type: Function,
+      required: true
     }
 
   },
@@ -30,8 +34,33 @@ export default defineComponent({
     const handleClick = () => {
       props.handleCompleted(props.index)
     }
+
+    const bgColor = ref('white')
+    const myColor = ref('black')
+    const isShow = ref(false)
+    // 鼠标移入移出
+    const mouseHandler = (flag:boolean) => {
+      if (flag) {
+        bgColor.value = 'pink'
+        myColor.value = 'green'
+        isShow.value = true
+      } else {
+        bgColor.value = 'white'
+        myColor.value = 'black'
+        isShow.value = false
+      }
+    }
+    // 删除方法
+    const deleteFn = () => {
+      if (window.confirm('确定要删除吗?')) { props.deleteTodo(props.index) }
+    }
     return {
-      handleClick
+      handleClick,
+      mouseHandler,
+      bgColor,
+      myColor,
+      isShow,
+      deleteFn
     }
   }
 })
